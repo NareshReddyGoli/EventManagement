@@ -41,61 +41,73 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      {/* Navigation */}
+      {/* Header */}
       <nav className="glass-effect border-b border-primary/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <h1 className="text-xl font-bold gradient-text">University Events</h1>
-              </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-primary shadow-glow" />
+              <h1 className="text-xl font-bold gradient-text">Campus Events</h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="hidden sm:inline-flex">
-                About
-              </Button>
-              <Button variant="ghost" className="hidden sm:inline-flex">
-                Features
-              </Button>
-              <Button onClick={() => setShowLogin(true)} className="bg-gradient-primary">
-                Sign In
-              </Button>
+            <div className="hidden md:flex items-center gap-6 text-sm">
+              <button className="text-muted-foreground hover:text-foreground transition-colors">Events</button>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">Coordinators</button>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">About</button>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">Contact</button>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" className="hidden sm:inline-flex">Explore</Button>
+              <Button onClick={() => setShowLogin(true)} className="bg-gradient-primary">Sign In</Button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero + Image Collage */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-96 h-96 bg-primary/10 rounded-full blur-3xl floating-element"></div>
-              </div>
-              <div className="relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <div className="relative inline-flex">
                 <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
                   <Sparkles className="w-3 h-3 mr-1" />
-                  University Event Management System
+                  Celebrate. Connect. Create.
                 </Badge>
-                <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                  <span className="gradient-text">University Event</span>
-                  <br />
-                  <span className="text-foreground">Management</span>
-                </h1>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                  Discover, create, and manage university events with ease. Connect with your academic 
-                  community through our comprehensive event platform designed for students, coordinators, and administrators.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" onClick={() => setShowLogin(true)} className="bg-gradient-primary shadow-glow">
-                    Get Started
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button size="lg" variant="outline" className="border-primary/20">
-                    Learn More
-                  </Button>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Make every campus moment
+                <br />
+                <span className="gradient-text">unforgettable</span>
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
+                Discover inspiring workshops, vibrant fests, and insightful seminars. Organize
+                and participate with a seamless experience crafted for students, coordinators, and admins.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" onClick={() => setShowLogin(true)} className="bg-gradient-primary shadow-glow">
+                  Get Started
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary/20">Browse Events</Button>
+              </div>
+              <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex -space-x-3">
+                  <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=64&q=80&auto=format&fit=crop" alt="crowd" className="w-8 h-8 rounded-full border border-primary/20" />
+                  <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=64&q=80&auto=format&fit=crop" alt="celebration" className="w-8 h-8 rounded-full border border-primary/20" />
+                  <img src="https://images.unsplash.com/photo-1488998527040-85054a85150e?w=64&q=80&auto=format&fit=crop" alt="workshop" className="w-8 h-8 rounded-full border border-primary/20" />
                 </div>
+                Trusted by 50+ departments
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="absolute -top-10 -right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+              <div className="grid grid-cols-3 gap-4 relative">
+                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80&auto=format&fit=crop" alt="Fest" className="rounded-xl shadow-lg object-cover h-40 w-full" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.svg';}} />
+                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop" alt="Seminar" className="rounded-xl shadow-lg object-cover h-56 w-full mt-6" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.svg';}} />
+                <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=600&q=80&auto=format&fit=crop" alt="Workshop" className="rounded-xl shadow-lg object-cover h-48 w-full mt-2" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.svg';}} />
+                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&q=80&auto=format&fit=crop" alt="Concert" className="rounded-xl shadow-lg object-cover h-56 w-full col-span-2" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.svg';}} />
+                <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&q=80&auto=format&fit=crop" alt="Team" className="rounded-xl shadow-lg object-cover h-40 w-full" onError={(e)=>{(e.currentTarget as HTMLImageElement).src='/placeholder.svg';}} />
               </div>
             </div>
           </div>
@@ -234,6 +246,25 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Event Gallery with Positive Vibes */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold">Moments that matter</h3>
+              <p className="text-muted-foreground">A glimpse into the energy on campus</p>
+            </div>
+            <Button variant="outline" className="border-primary/20">View All Memories</Button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <img className="rounded-lg object-cover h-44 w-full" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80&auto=format&fit=crop" alt="Crowd cheering" />
+            <img className="rounded-lg object-cover h-44 w-full" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80&auto=format&fit=crop" alt="Festival lights" />
+            <img className="rounded-lg object-cover h-44 w-full" src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80&auto=format&fit=crop" alt="Hands up" />
+            <img className="rounded-lg object-cover h-44 w-full" src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=800&q=80&auto=format&fit=crop" alt="Workshop smiles" />
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -254,11 +285,54 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-primary/20 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-muted-foreground">
-            © 2024 University Event Management System. Built with ❤️ for academic communities.
-          </p>
+      <footer className="border-t border-primary/20 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-7 h-7 rounded-md bg-gradient-primary" />
+                <span className="font-semibold">Campus Events</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Your hub for discovering and organizing campus life. Join, host, and celebrate.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-medium mb-3">Explore</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a className="hover:text-foreground" href="#">All Events</a></li>
+                <li><a className="hover:text-foreground" href="#">Workshops</a></li>
+                <li><a className="hover:text-foreground" href="#">Fests</a></li>
+                <li><a className="hover:text-foreground" href="#">Seminars</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-3">For Teams</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a className="hover:text-foreground" href="#">Coordinator Guide</a></li>
+                <li><a className="hover:text-foreground" href="#">Venue Management</a></li>
+                <li><a className="hover:text-foreground" href="#">Certificates</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-3">Connect</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a className="hover:text-foreground" href="#">About</a></li>
+                <li><a className="hover:text-foreground" href="#">Contact</a></li>
+                <li><a className="hover:text-foreground" href="#">Support</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-10 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-muted-foreground">© 2024 Campus Events. All rights reserved.</p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <a href="#" className="hover:text-foreground">Privacy</a>
+              <span>•</span>
+              <a href="#" className="hover:text-foreground">Terms</a>
+              <span>•</span>
+              <a href="#" className="hover:text-foreground">Cookies</a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

@@ -54,7 +54,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
   const navItems = navigationConfig[user.role as UserRole] || [];
 
   return (
-    <nav className="glass-effect border-r border-primary/20 h-screen w-64 p-4 space-y-2">
+    <nav className="glass-effect border-r border-primary/20 fixed inset-y-0 left-0 w-64 p-4 space-y-2 overflow-y-auto z-20">
       <div className="mb-8">
         <h2 className="text-xl font-bold gradient-text">University Events</h2>
         <p className="text-sm text-muted-foreground capitalize">

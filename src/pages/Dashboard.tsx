@@ -338,10 +338,9 @@ export const Dashboard: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-gradient-hero">
       <Navigation currentView={currentView} onViewChange={setCurrentView} />
-      
-      <main className="flex-1 p-6 ml-64">
+      <main className="flex-1 p-6 md:pl-64 pt-6">
         <div className="max-w-7xl mx-auto">
           {renderContent()}
         </div>
