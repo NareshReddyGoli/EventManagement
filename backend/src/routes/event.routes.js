@@ -6,9 +6,11 @@ const { auth, requireRoles } = require('../middleware/auth.middleware');
 router.get('/', ctrl.list);
 router.get('/:id', ctrl.get);
 
-// Protected create/update/delete (admin or coordinator)
-router.post('/', auth(true), requireRoles('admin', 'coordinator'), ctrl.create);
+// Only ADMIN can create and delete events
+router.post('/', auth(true), requireRoles('admin'), ctrl.create);
+router.delete('/:id', auth(true), requireRoles('admin'), ctrl.remove);
+
+// Admin and assigned coordinators can update events
 router.put('/:id', auth(true), requireRoles('admin', 'coordinator'), ctrl.update);
-router.delete('/:id', auth(true), requireRoles('admin', 'coordinator'), ctrl.remove);
 
 module.exports = router;

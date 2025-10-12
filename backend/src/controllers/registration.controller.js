@@ -11,12 +11,16 @@ exports.create = async (req, res) => {
     const reg = await Registration.create({
       ...req.body,
     });
+    
+    // Update event registered count
+    await recalcEventRegisteredCount(reg.eventId);
+    
     res.status(201).json({ success: true, data: reg });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({ success: false, message: 'User already registered for this event' });
     }
-    console.error(error);
+    console.error('Registration create error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

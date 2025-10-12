@@ -3,7 +3,7 @@ import { User } from '@/types';
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
   signup: (payload: {
     username: string;
     email: string;
@@ -66,13 +66,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     init();
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (res.ok && data?.success && data?.token && data?.user) {
@@ -98,8 +98,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
       const data = await res.json();
       if (res.ok && data?.success) {
-        // Auto login after successful signup
-        const loggedIn = await login(payload.username, payload.password);
+        // Auto login after successful signup (use email instead of username)
+        const loggedIn = await login(payload.email, payload.password);
         if (loggedIn) return { success: true };
         return { success: true, message: 'Account created. Please login.' };
       }

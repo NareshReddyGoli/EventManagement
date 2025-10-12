@@ -37,7 +37,7 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   const [selectedRole, setSelectedRole] = useState<UserRole>('student');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, isLoading } = useAuth();
   const { toast } = useToast();
@@ -45,16 +45,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!username || !password) {
+    if (!email || !password) {
       toast({
         title: "Missing Information",
-        description: "Please enter both username and password.",
+        description: "Please enter both email and password.",
         variant: "destructive",
       });
       return;
     }
 
-    const success = await login(username, password);
+    const success = await login(email, password);
     
     if (success) {
       toast({
@@ -65,7 +65,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     } else {
       toast({
         title: "Login Failed",
-        description: "Invalid username or password. Please try again.",
+        description: "Invalid email or password. Please try again.",
         variant: "destructive",
       });
     }
@@ -106,13 +106,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">{selectedRole === 'coordinator' ? 'Registration Number' : 'Admin Username'}</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
-                type="text"
-                placeholder={selectedRole === 'coordinator' ? 'Enter your registration number' : 'Enter your admin username'}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>

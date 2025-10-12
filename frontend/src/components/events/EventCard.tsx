@@ -11,7 +11,8 @@ import {
   Edit,
   Trash2,
   Eye,
-  UserCheck
+  UserCheck,
+  XCircle
 } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 
@@ -21,6 +22,7 @@ interface EventCardProps {
   onDelete?: (eventId: string) => void;
   onView?: (event: Event) => void;
   onRegister?: (event: Event) => void;
+  onUnregister?: (event: Event) => void;
   isRegistered?: boolean;
   variant?: 'default' | 'compact';
 }
@@ -48,6 +50,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   onDelete,
   onView,
   onRegister,
+  onUnregister,
   isRegistered = false,
   variant = 'default'
 }) => {
@@ -55,6 +58,12 @@ export const EventCard: React.FC<EventCardProps> = ({
   const isAdmin = user?.role === 'admin';
   const isCoordinator = user?.role === 'coordinator';
   const isStudent = user?.role === 'student';
+  
+  // Check if coordinator is assigned to this event
+  const isAssignedCoordinator = isCoordinator && (
+    event.coordinators?.includes(user?.id || '') || 
+    event.createdBy === user?.id
+  );
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -178,13 +187,15 @@ export const EventCard: React.FC<EventCardProps> = ({
               </Button>
             )}
             
-            {(isAdmin || isCoordinator) && onEdit && (
+            {/* Only admin or assigned coordinators can edit */}
+            {(isAdmin || isAssignedCoordinator) && onEdit && (
               <Button variant="outline" size="sm" onClick={() => onEdit(event)}>
                 <Edit className="w-4 h-4 mr-1" />
                 Edit
               </Button>
             )}
             
+            {/* Only admin can delete events */}
             {isAdmin && onDelete && (
               <Button 
                 variant="outline" 
@@ -198,18 +209,22 @@ export const EventCard: React.FC<EventCardProps> = ({
             )}
           </div>
 
-          {isStudent && onRegister && (
-            <div>
-              {isRegistered ? (
-                <Button disabled className="bg-accent">
-                  <UserCheck className="w-4 h-4 mr-1" />
-                  Registered
+          {isStudent && (onRegister || onUnregister) && (
+            <div className="flex gap-2">
+              {isRegistered && onUnregister ? (
+                <Button 
+                  onClick={() => onUnregister(event)} 
+                  variant="outline"
+                  className="border-destructive/20 hover:bg-destructive/10"
+                >
+                  <XCircle className="w-4 h-4 mr-1" />
+                  Unregister
                 </Button>
               ) : isEventFull() ? (
                 <Button disabled>
                   Event Full
                 </Button>
-              ) : isRegistrationOpen() ? (
+              ) : isRegistrationOpen() && onRegister ? (
                 <Button onClick={() => onRegister(event)} className="bg-gradient-primary">
                   Register Now
                 </Button>

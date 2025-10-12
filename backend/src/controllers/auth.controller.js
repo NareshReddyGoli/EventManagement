@@ -20,22 +20,22 @@ function buildUserPayload(userDoc) {
 
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ success: false, message: 'Username and password are required' });
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
     }
 
     // Admin login (from env only; no DB admin user)
     if (
-      process.env.ADMIN_USERNAME &&
+      process.env.ADMIN_EMAIL &&
       process.env.ADMIN_PASSWORD &&
-      username.toLowerCase() === process.env.ADMIN_USERNAME.toLowerCase() &&
+      email.toLowerCase() === process.env.ADMIN_EMAIL.toLowerCase() &&
       password === process.env.ADMIN_PASSWORD
     ) {
       const adminPayload = {
         id: 'admin-env',
-        username: process.env.ADMIN_USERNAME,
-        email: process.env.ADMIN_EMAIL || 'admin@example.com',
+        username: process.env.ADMIN_USERNAME || 'admin',
+        email: process.env.ADMIN_EMAIL,
         firstName: process.env.ADMIN_FIRST_NAME || 'Admin',
         lastName: process.env.ADMIN_LAST_NAME || 'User',
         role: 'admin',
@@ -48,8 +48,8 @@ exports.login = async (req, res) => {
       return res.json({ success: true, token, user: adminPayload });
     }
 
-    // Non-admin login against DB
-    const user = await User.findOne({ username: username.toLowerCase() });
+    // Non-admin login against DB (search by email)
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }

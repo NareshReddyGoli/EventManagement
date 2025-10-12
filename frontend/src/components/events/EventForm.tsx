@@ -39,7 +39,7 @@ export const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel })
       : '',
     requiresApproval: event?.requiresApproval || false,
     tags: event?.tags?.join(', ') || '',
-    status: event?.status || 'draft',
+    status: event?.status || 'published',
   });
 
   useEffect(() => {
@@ -57,10 +57,31 @@ export const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form data:', formData);
+    
+    // Validation
     if (!formData.title || !formData.description || !formData.startDate || !formData.endDate) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.venueId) {
+      toast({
+        title: "Missing Venue",
+        description: "Please select a venue for the event.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.registrationDeadline) {
+      toast({
+        title: "Missing Deadline",
+        description: "Please set a registration deadline.",
         variant: "destructive",
       });
       return;
@@ -92,21 +113,24 @@ export const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel })
       title: formData.title,
       description: formData.description,
       type: formData.type as Event['type'],
-      startDate,
-      endDate,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       venueId: formData.venueId,
-      coordinators: event?.coordinators || [user!.id],
-      maxParticipants: formData.maxParticipants,
+      coordinators: event?.coordinators || (user!.id === 'admin-env' ? [] : [user!.id]),
+      maxParticipants: Number(formData.maxParticipants),
       status: formData.status as Event['status'],
-      registrationDeadline,
+      registrationDeadline: registrationDeadline.toISOString(),
       requiresApproval: formData.requiresApproval,
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-      createdBy: event?.createdBy || user!.id,
+      createdBy: event?.createdBy || (user!.id === 'admin-env' ? undefined : user!.id),
     };
 
     try {
+      console.log('Submitting event data:', eventData);
+      
       if (event) {
         const updatedEvent = await apiPut<Event>(`/api/events/${event.id}`, eventData, true);
+        console.log('Event updated:', updatedEvent);
         onSave(updatedEvent);
         toast({
           title: "Event Updated",
@@ -114,16 +138,18 @@ export const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel })
         });
       } else {
         const newEvent = await apiPost<Event>(`/api/events`, eventData, true);
+        console.log('Event created:', newEvent);
         onSave(newEvent);
         toast({
           title: "Event Created",
           description: "Event has been successfully created.",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Event save error:', error);
       toast({
         title: "Error",
-        description: "Failed to save event. Please try again.",
+        description: error.message || "Failed to save event. Please try again.",
         variant: "destructive",
       });
     }
@@ -273,13 +299,16 @@ export const EventForm: React.FC<EventFormProps> = ({ event, onSave, onCancel })
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="draft">Draft (Not visible to students)</SelectItem>
+                  <SelectItem value="published">Published (Visible to students)</SelectItem>
                   <SelectItem value="ongoing">Ongoing</SelectItem>
                   <SelectItem value="completed">Completed</SelectItem>
                   <SelectItem value="cancelled">Cancelled</SelectItem>
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground">
+                Students can only see events with "Published" status
+              </p>
             </div>
 
             <div className="flex items-center space-x-2">

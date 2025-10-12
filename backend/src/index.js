@@ -16,6 +16,8 @@ const certificateRoutes = require('./routes/certificate.routes');
 const feedbackRoutes = require('./routes/feedback.routes');
 const eventMemoryRoutes = require('./routes/eventMemory.routes');
 const registrationFormRoutes = require('./routes/registrationForm.routes');
+const notificationRoutes = require('./routes/notification.routes');
+const analyticsRoutes = require('./routes/analytics.routes');
 
 const app = express();
 
@@ -86,8 +88,13 @@ app.use(cors(corsOptions));
 // Handle preflight requests for all routes
 app.options('*', cors(corsOptions));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Increased limit for base64 images
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(morgan('dev'));
+
+// Serve static files (certificates)
+const path = require('path');
+app.use('/certificates', express.static(path.join(__dirname, '../certificates')));
 
 // Database connection
 mongoose
@@ -123,6 +130,8 @@ app.use('/api/certificates', certificateRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/event-memories', eventMemoryRoutes);
 app.use('/api/registration-forms', registrationFormRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -11,10 +11,30 @@ const venueSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  address: {
+    type: String,
+    trim: true
+  },
   capacity: {
     type: Number,
     required: true,
     min: 1
+  },
+  mapLink: {
+    type: String,
+    trim: true
+  },
+  contactPerson: {
+    type: String,
+    trim: true
+  },
+  contactPhone: {
+    type: String,
+    trim: true
+  },
+  contactEmail: {
+    type: String,
+    trim: true
   },
   facilities: [{
     type: String,
@@ -27,7 +47,7 @@ const venueSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   },
   updatedBy: {
     type: mongoose.Schema.Types.ObjectId,

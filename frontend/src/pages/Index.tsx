@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { LoginForm } from '@/components/auth/LoginForm';
-import { Dashboard } from './Dashboard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,15 +14,23 @@ import {
   Star,
   Sparkles
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
 
-  if (user) {
-    return <Dashboard />;
-  }
+  useEffect(() => {
+    // Redirect logged-in users to appropriate dashboard
+    if (user) {
+      if (user.role === 'student') {
+        navigate('/student');
+      } else if (user.role === 'admin' || user.role === 'coordinator') {
+        navigate('/dashboard');
+      }
+    }
+  }, [user, navigate]);
 
   if (showLogin) {
     return (

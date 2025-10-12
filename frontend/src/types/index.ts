@@ -4,6 +4,7 @@ export interface User {
   id: string;
   username: string;
   email: string;
+  phone?: string;
   firstName: string;
   lastName: string;
   role: UserRole;
@@ -21,7 +22,12 @@ export interface Venue {
   id: string;
   name: string;
   location: string;
+  address?: string;
   capacity: number;
+  mapLink?: string;
+  contactPerson?: string;
+  contactPhone?: string;
+  contactEmail?: string;
   facilities: string[];
   isActive: boolean;
   createdBy: string;
@@ -116,11 +122,20 @@ export interface EventMemory {
   id: string;
   eventId: string;
   userId: string;
+  user?: User;
+  event?: Event;
   type: 'photo' | 'note';
-  content: string; // base64 for photos, text for notes
+  content: string; // URL for photos, text for notes
   caption?: string;
+  approved: boolean;
+  approvedBy?: string;
+  approvedAt?: Date;
+  rejectedBy?: string;
+  rejectedAt?: Date;
+  rejectionReason?: string;
   isPublic: boolean;
-  submittedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface FormField {
