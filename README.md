@@ -5,7 +5,7 @@ A comprehensive event management platform built with MongoDB, Express.js, React,
 ## ✨ Features
 
 ### 🔐 Strict Role-Based Access Control
-
+---------------------------------------------------------------------------------------
 #### 🔴 **IMPORTANT: Access Control Rules**
 
 **ONLY ADMIN CAN CREATE EVENTS** ⚠️
